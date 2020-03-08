@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { Header, Segment, Icon } from 'semantic-ui-react';
 
 type Props = {
   title?: string
@@ -8,7 +9,7 @@ type Props = {
 
 const Layout: React.FunctionComponent<Props> = ({
   children,
-  title = 'This is the default title',
+  title = 'Sharemoji | Easily share Slack custom Emoji',
 }) => (
   <div>
     <Head>
@@ -17,25 +18,20 @@ const Layout: React.FunctionComponent<Props> = ({
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <header>
-      <nav>
-        <Link href="/">
-          <a>Home</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/about">
-          <a>About</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/users">
-          <a>Users List</a>
-        </Link>
-      </nav>
+      <Segment clearing>
+        <Header as='h2' floated='left'>
+          <Link href="/">
+            <a><Icon name='home' /></a>
+          </Link>
+        </Header>
+        <Header as='h2' floated='right'>
+          <Link href="/mypage">
+            <a><Icon name='user' /></a>
+          </Link>
+        </Header>
+      </Segment>
     </header>
     {children}
-    <footer>
-      <hr />
-      <span>I'm here to stay (Footer)</span>
-    </footer>
   </div>
 )
 
