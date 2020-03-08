@@ -8,9 +8,6 @@ const handleSignIn = () => {
   provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
   auth
     .signInWithPopup(provider)
-    .then(() => {
-      alert("You are signed In");
-    })
     .catch(() => {
       alert("OOps something went wrong check your console");
     });
