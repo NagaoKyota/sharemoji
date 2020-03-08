@@ -1,47 +1,33 @@
 import * as React from 'react'
-import Link from 'next/link'
 import Layout from '../components/Layout'
 import { auth, firebase } from "../src/firebase";
+import { Header, Container, Button, Icon } from 'semantic-ui-react';
 
-class IndexPage extends React.Component {
-  handleSignIn = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
-    auth
-      .signInWithPopup(provider)
-      .then(() => {
-        alert("You are signed In");
-      })
-      .catch(() => {
-        alert("OOps something went wrong check your console");
-      });
-  };
+const handleSignIn = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
+  auth
+    .signInWithPopup(provider)
+    .then(() => {
+      alert("You are signed In");
+    })
+    .catch(() => {
+      alert("OOps something went wrong check your console");
+    });
+};
 
-  handleSignout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        alert("Logout successful");
-      })
-      .catch(() => {
-        alert("OOps something went wrong check your console");
-      });
-  };
-
-  render() {
-    return (
-      <Layout title="Home | Next.js + TypeScript Example">
-        <h1>Hello Next.js 👋</h1>
-        <p>
-          <Link href="/mypage">
-            <a>OAuth</a>
-          </Link>
-          <button onClick={this.handleSignIn}>Sign In using google</button> 
-          <button onClick={this.handleSignout}>Signout</button>
-        </p>
-      </Layout>
-    )
-  }
-}
+const IndexPage = (): JSX.Element => (
+  <Layout>
+    <Header as='h1' textAlign='center' style={{ fontSize: '60px' }}>
+      Sharemoji
+    </Header>
+    <Container textAlign='center'>
+      <Button className="google plus" onClick={handleSignIn}>
+        <Icon name='google' />
+        Google
+      </Button>
+    </Container>
+  </Layout>
+);
 
 export default IndexPage
