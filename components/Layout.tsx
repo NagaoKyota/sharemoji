@@ -1,15 +1,15 @@
-import * as React from 'react'
-import Link from 'next/link'
-import Head from 'next/head'
-import { Header, Segment, Icon } from 'semantic-ui-react';
+import * as React from "react";
+import Link from "next/link";
+import Head from "next/head";
+import { Header, Segment, Icon } from "semantic-ui-react";
 
 type Props = {
-  title?: string
-}
+  title?: string;
+};
 
 const Layout: React.FunctionComponent<Props> = ({
   children,
-  title = 'Sharemoji | Easily share Slack custom Emoji',
+  title = "Sharemoji | Easily share Slack custom Emoji"
 }) => (
   <div>
     <Head>
@@ -19,20 +19,24 @@ const Layout: React.FunctionComponent<Props> = ({
     </Head>
     <header>
       <Segment clearing>
-        <Header as='h2' floated='left'>
+        <Header as="h2" floated="left">
           <Link href="/">
-            <a><Icon name='home' /></a>
+            <a>
+              <Icon name="home" />
+            </a>
           </Link>
         </Header>
-        <Header as='h2' floated='right'>
+        <Header as="h2" floated="right">
           <Link href="/mypage">
-            <a><Icon name='user' /></a>
+            <a>
+              <Icon name="user" />
+            </a>
           </Link>
         </Header>
       </Segment>
     </header>
     {children}
   </div>
-)
+);
 
-export default Layout
+export default Layout;

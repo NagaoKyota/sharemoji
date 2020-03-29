@@ -1,5 +1,5 @@
-import React from 'react';
-import 'semantic-ui-css/semantic.min.css'
+import React from "react";
+import "semantic-ui-css/semantic.min.css";
 
 interface IProps {
   Component: React.FC;
@@ -7,7 +7,7 @@ interface IProps {
 }
 
 const App = ({ Component, pageProps }: IProps) => {
-  return <Component {...pageProps} />
-}
+  return <Component {...pageProps} />;
+};
 
 export default App;
