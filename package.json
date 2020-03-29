@@ -6,8 +6,8 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
-    "lint": "eslint './{components,pages,src}/**/*.{ts,tsx,js}'",
-    "lint:fix": "eslint --fix './{components,pages,src}/**/*.{ts,tsx,js}'"
+    "lint": "eslint './{components,pages,src}/**/*.{ts,tsx,js,jsx}'",
+    "lint:fix": "eslint --fix './{components,pages,src}/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
     "firebase": "7.10.0",
