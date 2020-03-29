@@ -1,14 +1,14 @@
 import React from "react";
-import { NextPage } from 'next'
+import { NextPage } from "next";
 import router from "next/router";
 import { auth } from "../firebase";
 
-interface IState {
+interface State {
   status: string;
-};
+}
 
 const withAuth = (Component: NextPage) => {
-  return class extends React.Component<{}, IState> {
+  return class C extends React.Component<{}, State> {
     constructor(props: Readonly<{}>) {
       super(props);
       this.state = {
@@ -17,7 +17,9 @@ const withAuth = (Component: NextPage) => {
     }
 
     static async getInitialProps(ctx: any) {
-      return Component.getInitialProps && await Component.getInitialProps(ctx)
+      return (
+        Component.getInitialProps && (await Component.getInitialProps(ctx))
+      );
     }
 
     componentDidMount() {
