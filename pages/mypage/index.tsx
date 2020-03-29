@@ -1,32 +1,41 @@
-import * as React from 'react'
+import React from 'react'
 import { NextPage } from 'next'
 import Layout from '../../components/Layout'
+import CardGroup from '../../components/CardGroup';
 import withAuth from "../../src/helper/withAuth";
-import { auth } from "../../src/firebase";
+import { auth, db } from "../../src/firebase";
 import { Header, Container, Button } from 'semantic-ui-react';
 
-const handleSignout = () => {
-  auth
-    .signOut()
-    .then(() => {
-      alert("Logout successful");
-    })
-    .catch(() => {
-      alert("OOps something went wrong check your console");
-    });
+interface IEmoji {
+  name: string;
+  image: string;
+}
+
+interface IProps {
+  emojiList: IEmoji[];
 };
 
-const Mypage: NextPage = () => {
+const Mypage: NextPage<IProps> = ({ emojiList }) => {
   return (
     <Layout>
       <Header as='h1' textAlign='center' style={{ fontSize: '60px' }}>
         Sharemoji
       </Header>
       <Container textAlign='center'>
-        <Button onClick={handleSignout}>ログアウト</Button>
+        <Button onClick={() => auth.signOut()}>ログアウト</Button>
+      </Container>
+      <Container textAlign='center'>
+        <CardGroup emojiList={emojiList} />
       </Container>
     </Layout>
   )
 }
 
-export default withAuth(Mypage);
+Mypage.getInitialProps = async () => {
+  const datas = await db.collection("emojis").limit(10).get();
+  const emojiList: IEmoji[] = datas.docs.map((doc: any) => doc.data());
+
+  return { emojiList: emojiList }
+}
+
+export default withAuth(Mypage as NextPage);

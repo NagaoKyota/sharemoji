@@ -1,4 +1,5 @@
 import React from "react";
+import { NextPage } from 'next'
 import router from "next/router";
 import { auth } from "../firebase";
 
@@ -6,13 +7,17 @@ interface IState {
   status: string;
 };
 
-const withAuth = (Component: React.FC) => {
+const withAuth = (Component: NextPage) => {
   return class extends React.Component<{}, IState> {
     constructor(props: Readonly<{}>) {
       super(props);
       this.state = {
         status: "LOADING"
       };
+    }
+
+    static async getInitialProps(ctx: any) {
+      return Component.getInitialProps && await Component.getInitialProps(ctx)
     }
 
     componentDidMount() {
@@ -29,9 +34,7 @@ const withAuth = (Component: React.FC) => {
 
     renderContent() {
       const { status } = this.state;
-      if (status == "LOADING") {
-        return <h1>Loading ......</h1>;
-      } else if (status == "SIGNED_IN") {
+      if (status == "SIGNED_IN") {
         return <Component {...this.props} />;
       }
     }
