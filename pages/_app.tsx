@@ -1,12 +1,12 @@
 import React from "react";
 import "semantic-ui-css/semantic.min.css";
 
-interface IProps {
+interface Props {
   Component: React.FC;
   pageProps: any;
 }
 
-const App = ({ Component, pageProps }: IProps) => {
+const App = ({ Component, pageProps }: Props) => {
   return <Component {...pageProps} />;
 };
 

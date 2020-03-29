@@ -6,16 +6,16 @@ import withAuth from "../../src/helper/withAuth";
 import { auth, db } from "../../src/firebase";
 import { Header, Container, Button } from "semantic-ui-react";
 
-interface IEmoji {
+interface Emoji {
   name: string;
   image: string;
 }
 
-interface IProps {
-  emojiList: IEmoji[];
+interface Props {
+  emojiList: Emoji[];
 }
 
-const Mypage: NextPage<IProps> = ({ emojiList }) => {
+const Mypage: NextPage<Props> = ({ emojiList }) => {
   return (
     <Layout>
       <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
@@ -36,7 +36,7 @@ Mypage.getInitialProps = async () => {
     .collection("emojis")
     .limit(10)
     .get();
-  const emojiList: IEmoji[] = datas.docs.map((doc: any) => doc.data());
+  const emojiList: Emoji[] = datas.docs.map((doc: any) => doc.data());
 
   return { emojiList: emojiList };
 };

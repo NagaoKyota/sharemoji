@@ -2,14 +2,14 @@ import React from "react";
 import { Card } from "semantic-ui-react";
 import CardEmoji from "./CardEmoji";
 
-interface IProps {
+interface Props {
   emojiList: {
     name: string;
     image: string;
   }[];
 }
 
-const CardGroup: React.FC<IProps> = ({ emojiList }) => (
+const CardGroup: React.FC<Props> = ({ emojiList }) => (
   <Card.Group centered style={{ paddingTop: "10px" }}>
     {emojiList
       ? emojiList.map((data, index) => <CardEmoji key={index} {...data} />)
