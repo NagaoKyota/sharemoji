@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { storage } from "../src/firebase";
 
-const copyImage = (blob) => {
+const copyToClipboard = (blob) => {
   navigator.clipboard.write([
     new ClipboardItem({
       [blob.type]: blob
@@ -13,6 +13,31 @@ const copyImage = (blob) => {
     .catch((e) => {
       console.error(e);
     });
+}
+
+const createImage = (options) => {
+  options = options || {};
+  const img = (Image) ? new Image() : document.createElement("img");
+  if (options.src) { img.src = options.src; }
+  return img;
+}
+
+const copyImage = (blob) => {
+  if (blob.type === "image/jpeg") {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const imageUrl = window.URL.createObjectURL(blob);
+    const imageEl = createImage({ src: imageUrl });
+    imageEl.onload = (e) => {
+      canvas.width = e.target.width;
+      canvas.height = e.target.height;
+      ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
+      canvas.toBlob(copyToClipboard, "image/png", 1);
+    };
+  } else if (blob.type === "image/png") {
+    copyToClipboard(blob);
+  }
 }
 
 const EmojiArea = ({
