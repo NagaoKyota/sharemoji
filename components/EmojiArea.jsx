@@ -60,7 +60,9 @@ const EmojiArea = ({ emoji }) => {
       xhr.open("GET", url);
       xhr.send();
 
-      imageRef.current.src = url;
+      if (imageRef) {
+        imageRef.current.src = url;
+      }
     });
   });
 
