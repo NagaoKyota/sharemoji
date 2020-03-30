@@ -23,13 +23,11 @@ const Mypage: NextPage<Props> = ({ emojiList }) => {
         Sharemoji
       </Header>
       <Container textAlign="center">
+        <FileUpload />
         <Button onClick={() => auth.signOut()}>ログアウト</Button>
       </Container>
       <Container textAlign="center">
         <CardGroup emojiList={emojiList} />
-      </Container>
-      <Container textAlign="center">
-        <FileUpload />
       </Container>
     </Layout>
   );

@@ -29,7 +29,7 @@ const FileUpload: React.FC = () => {
   };
 
   return (
-    <div style={{ marginTop: "10px" }}>
+    <div style={{ marginBottom: "10px" }}>
       <input type="file" accept="image/jpeg,image/png" onChange={selectFile} />
     </div>
   );
