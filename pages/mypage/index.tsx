@@ -5,6 +5,7 @@ import CardGroup from "../../components/CardGroup";
 import withAuth from "../../src/helper/withAuth";
 import { auth, db } from "../../src/firebase";
 import { Header, Container, Button } from "semantic-ui-react";
+import FileUpload from "../../components/FileUpload";
 
 interface Emoji {
   name: string;
@@ -26,6 +27,9 @@ const Mypage: NextPage<Props> = ({ emojiList }) => {
       </Container>
       <Container textAlign="center">
         <CardGroup emojiList={emojiList} />
+      </Container>
+      <Container textAlign="center">
+        <FileUpload />
       </Container>
     </Layout>
   );
