@@ -59,13 +59,13 @@ const defaultStyle = {
 };
 
 const hoverStyle = {
-  transform: "translateY(-50%) translateX(-50%) scale(1.1)",
+  transform: "translateY(-50%) translateX(-50%) scale(1.1)"
 };
 
 const EmojiArea = ({ emoji, name }) => {
-  let blob = null;
   let timeout;
 
+  const [blob, setBlob] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const imageRef = useRef(null);
@@ -85,7 +85,7 @@ const EmojiArea = ({ emoji, name }) => {
       const xhr = new XMLHttpRequest();
       xhr.responseType = "blob";
       xhr.onload = () => {
-        blob = xhr.response;
+        setBlob(xhr.response);
       };
       xhr.open("GET", url);
       xhr.send();
@@ -94,7 +94,7 @@ const EmojiArea = ({ emoji, name }) => {
         imageRef.current.src = url;
       }
     });
-  });
+  }, []);
 
   return (
     <div
