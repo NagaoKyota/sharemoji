@@ -28,7 +28,7 @@ const createImage = options => {
 };
 
 const copyImage = blob => {
-  if (blob.type === "image/jpeg") {
+  if (blob?.type === "image/jpeg") {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -40,7 +40,7 @@ const copyImage = blob => {
       ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
       canvas.toBlob(copyToClipboard, "image/png", 1);
     };
-  } else if (blob.type === "image/png") {
+  } else if (blob?.type === "image/png") {
     copyToClipboard(blob);
   }
 };
@@ -74,12 +74,8 @@ const EmojiArea = ({ emoji, name }) => {
     setIsOpen(true);
     timeout = setTimeout(() => {
       setIsOpen(false);
+      clearTimeout(timeout);
     }, 2000);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    clearTimeout(timeout);
   };
 
   useEffect(() => {
@@ -134,7 +130,6 @@ const EmojiArea = ({ emoji, name }) => {
         }
         on="click"
         open={isOpen}
-        onClose={handleClose}
         onOpen={handleOpen}
         position="top center"
       />
