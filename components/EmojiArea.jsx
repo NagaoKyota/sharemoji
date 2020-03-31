@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Popup } from "semantic-ui-react";
 import { storage } from "../src/firebase";
 
 const copyToClipboard = blob => {
@@ -27,7 +28,7 @@ const createImage = options => {
 };
 
 const copyImage = blob => {
-  if (blob.type === "image/jpeg") {
+  if (blob?.type === "image/jpeg") {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -39,14 +40,43 @@ const copyImage = blob => {
       ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
       canvas.toBlob(copyToClipboard, "image/png", 1);
     };
-  } else if (blob.type === "image/png") {
+  } else if (blob?.type === "image/png") {
     copyToClipboard(blob);
   }
 };
 
-const EmojiArea = ({ emoji }) => {
-  let blob = null;
+const defaultStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translateY(-50%) translateX(-50%) scale(1.0)",
+  WebkitTransform: "translateY(-50%) translateX(-50%)",
+  borderRadius: "12px",
+  border: "1px solid #CCC",
+  backgroundColor: "#FFF",
+  transition: "transform .5s",
+  cursor: "pointer"
+};
+
+const hoverStyle = {
+  transform: "translateY(-50%) translateX(-50%) scale(1.1)"
+};
+
+const EmojiArea = ({ emoji, name }) => {
+  let timeout;
+
+  const [blob, setBlob] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMouseOver, setIsMouseOver] = useState(false);
   const imageRef = useRef(null);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+    timeout = setTimeout(() => {
+      setIsOpen(false);
+      clearTimeout(timeout);
+    }, 2000);
+  };
 
   useEffect(() => {
     const ref = storage.refFromURL(emoji);
@@ -55,7 +85,7 @@ const EmojiArea = ({ emoji }) => {
       const xhr = new XMLHttpRequest();
       xhr.responseType = "blob";
       xhr.onload = () => {
-        blob = xhr.response;
+        setBlob(xhr.response);
       };
       xhr.open("GET", url);
       xhr.send();
@@ -64,7 +94,7 @@ const EmojiArea = ({ emoji }) => {
         imageRef.current.src = url;
       }
     });
-  });
+  }, []);
 
   return (
     <div
@@ -72,21 +102,36 @@ const EmojiArea = ({ emoji }) => {
         textAlign: "center",
         fontSize: "100px",
         height: "200px",
-        position: "relative"
+        position: "relative",
+        backgroundColor: "whitesmoke"
       }}
     >
-      <img
-        ref={imageRef}
-        width="150px"
-        height="150px"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translateY(-50%) translateX(-50%)",
-          WebkitTransform: "translateY(-50%) translateX(-50%)"
-        }}
-        onClick={() => copyImage(blob)}
+      <Popup
+        trigger={
+          <img
+            ref={imageRef}
+            width="150px"
+            height="150px"
+            style={
+              isMouseOver
+                ? Object.assign({}, defaultStyle, hoverStyle)
+                : defaultStyle
+            }
+            onClick={() => copyImage(blob)}
+            onMouseEnter={() => setIsMouseOver(true)}
+            onMouseLeave={() => setIsMouseOver(false)}
+          />
+        }
+        content={
+          <>
+            Copy Image{" "}
+            <span style={{ fontSize: "20px", fontWeight: "bold" }}>{name}</span>
+          </>
+        }
+        on="click"
+        open={isOpen}
+        onOpen={handleOpen}
+        position="top center"
       />
     </div>
   );
