@@ -10,7 +10,7 @@ interface CardEmojiProps {
 const CardEmoji = ({ image, name = "none" }: CardEmojiProps) => {
   return (
     <Card id={name} style={{ margin: "20px" }}>
-      <EmojiArea emoji={image} />
+      <EmojiArea emoji={image} name={name} />
       <Card.Content>
         <Card.Header style={{ textAlign: "center" }}>{`:${name}:`}</Card.Header>
       </Card.Content>

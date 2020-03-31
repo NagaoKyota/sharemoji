@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Popup } from "semantic-ui-react";
 import { storage } from "../src/firebase";
 
 const copyToClipboard = blob => {
@@ -44,9 +45,42 @@ const copyImage = blob => {
   }
 };
 
-const EmojiArea = ({ emoji }) => {
+const defaultStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translateY(-50%) translateX(-50%) scale(1.0)",
+  WebkitTransform: "translateY(-50%) translateX(-50%)",
+  borderRadius: "12px",
+  border: "1px solid #CCC",
+  backgroundColor: "#FFF",
+  transition: "transform .5s",
+  cursor: "pointer"
+};
+
+const hoverStyle = {
+  transform: "translateY(-50%) translateX(-50%) scale(1.1)",
+};
+
+const EmojiArea = ({ emoji, name }) => {
   let blob = null;
+  let timeout;
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMouseOver, setIsMouseOver] = useState(false);
   const imageRef = useRef(null);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+    timeout = setTimeout(() => {
+      setIsOpen(false);
+    }, 2000);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    clearTimeout(timeout);
+  };
 
   useEffect(() => {
     const ref = storage.refFromURL(emoji);
@@ -72,21 +106,37 @@ const EmojiArea = ({ emoji }) => {
         textAlign: "center",
         fontSize: "100px",
         height: "200px",
-        position: "relative"
+        position: "relative",
+        backgroundColor: "whitesmoke"
       }}
     >
-      <img
-        ref={imageRef}
-        width="150px"
-        height="150px"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translateY(-50%) translateX(-50%)",
-          WebkitTransform: "translateY(-50%) translateX(-50%)"
-        }}
-        onClick={() => copyImage(blob)}
+      <Popup
+        trigger={
+          <img
+            ref={imageRef}
+            width="150px"
+            height="150px"
+            style={
+              isMouseOver
+                ? Object.assign({}, defaultStyle, hoverStyle)
+                : defaultStyle
+            }
+            onClick={() => copyImage(blob)}
+            onMouseEnter={() => setIsMouseOver(true)}
+            onMouseLeave={() => setIsMouseOver(false)}
+          />
+        }
+        content={
+          <>
+            Copy Image{" "}
+            <span style={{ fontSize: "20px", fontWeight: "bold" }}>{name}</span>
+          </>
+        }
+        on="click"
+        open={isOpen}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        position="top center"
       />
     </div>
   );
