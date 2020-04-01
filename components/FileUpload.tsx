@@ -33,7 +33,7 @@ const FileUpload: React.FC = () => {
   };
 
   const inputName = (event: any) => {
-    setName(removeExtension(event.target.value));
+    setName(event.target.value.replace(/[^0-9A-Za-z]/g, ""));
   };
 
   const blobToFile = (): File => {
@@ -43,7 +43,7 @@ const FileUpload: React.FC = () => {
   };
 
   const uploadFile = () => {
-    if (croppedBlob) {
+    if (croppedBlob && name) {
       const file: File = blobToFile();
       const storageRef = storage.ref();
       const ref = storageRef.child(file.name);
@@ -68,7 +68,8 @@ const FileUpload: React.FC = () => {
       {src ? (
         <input
           type="text"
-          defaultValue={removeExtension(name)}
+          value={removeExtension(name)}
+          placeholder="半角英数字のみ"
           style={{ marginLeft: "8px" }}
           onChange={inputName}
         />
