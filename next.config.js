@@ -2,8 +2,10 @@ require("dotenv").config();
 
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
+const withImages = require("next-images");
 
-module.exports = {
+module.exports = withImages({
+  esModule: true,
   webpack: config => {
     config.plugins = config.plugins || [];
     config.plugins = [
@@ -15,4 +17,4 @@ module.exports = {
     ];
     return config;
   }
-};
+});
