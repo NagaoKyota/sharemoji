@@ -32,6 +32,10 @@ const FileUpload: React.FC = () => {
     }
   };
 
+  const inputName = (event: any) => {
+    setName(removeExtension(event.target.value));
+  };
+
   const blobToFile = (): File => {
     croppedBlob.lastModifiedDate = new Date();
     croppedBlob.name = name;
@@ -59,8 +63,16 @@ const FileUpload: React.FC = () => {
   };
 
   return (
-    <div style={{ marginBottom: "10px" }}>
+    <div style={{ marginBottom: "16px" }}>
       <input type="file" accept="image/jpeg,image/png" onChange={selectFile} />
+      {src ? (
+        <input
+          type="text"
+          defaultValue={removeExtension(name)}
+          style={{ marginLeft: "8px" }}
+          onChange={inputName}
+        />
+      ) : null}
       {src ? <button onClick={uploadFile}>アップロード</button> : null}
       <Cropper
         ref={cropper}
@@ -70,7 +82,7 @@ const FileUpload: React.FC = () => {
             ? {
                 height: "300px",
                 width: "300px",
-                margin: "10px auto"
+                margin: "16px auto"
               }
             : {}
         }
