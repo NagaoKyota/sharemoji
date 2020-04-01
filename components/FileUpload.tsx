@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import Cropper from "react-cropper";
 import { storage, db } from "../src/firebase";
 
 const removeExtension = (str: string) => {
@@ -10,10 +11,40 @@ const removeExtension = (str: string) => {
 };
 
 const FileUpload: React.FC = () => {
+  const [src, setSrc] = useState("");
+  const [name, setName] = useState("");
+  const [croppedBlob, setCroppedBlob] = useState<any>(null);
+  const cropper: any = useRef(null);
+
+  const _crop = () => {
+    if (cropper) {
+      cropper.current.getCroppedCanvas().toBlob((blob: Blob) => {
+        setCroppedBlob(blob);
+      });
+    }
+  };
+
   const selectFile = (event: any) => {
     const { files } = event.target;
     if (files.length === 1) {
-      const file = files[0];
+      setSrc(window.URL.createObjectURL(files[0]));
+      setName(files[0].name);
+    }
+  };
+
+  const inputName = (event: any) => {
+    setName(event.target.value.replace(/[^0-9A-Za-z]/g, ""));
+  };
+
+  const blobToFile = (): File => {
+    croppedBlob.lastModifiedDate = new Date();
+    croppedBlob.name = name;
+    return croppedBlob as File;
+  };
+
+  const uploadFile = () => {
+    if (croppedBlob && name) {
+      const file: File = blobToFile();
       const storageRef = storage.ref();
       const ref = storageRef.child(file.name);
       ref.put(file).then(snapshot => {
@@ -23,14 +54,43 @@ const FileUpload: React.FC = () => {
           .set({
             image: `gs://${snapshot.ref.bucket}/${snapshot.ref.name}`,
             name: removeExtension(file.name)
+          })
+          .then(() => {
+            location.reload();
           });
       });
     }
   };
 
   return (
-    <div style={{ marginBottom: "10px" }}>
+    <div style={{ marginBottom: "16px" }}>
       <input type="file" accept="image/jpeg,image/png" onChange={selectFile} />
+      {src ? (
+        <input
+          type="text"
+          value={removeExtension(name)}
+          placeholder="半角英数字のみ"
+          style={{ marginLeft: "8px" }}
+          onChange={inputName}
+        />
+      ) : null}
+      {src ? <button onClick={uploadFile}>アップロード</button> : null}
+      <Cropper
+        ref={cropper}
+        src={src}
+        style={
+          src
+            ? {
+                height: "300px",
+                width: "300px",
+                margin: "16px auto"
+              }
+            : {}
+        }
+        aspectRatio={1}
+        guides={false}
+        crop={_crop}
+      />
     </div>
   );
 };
