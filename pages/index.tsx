@@ -1,7 +1,18 @@
-import * as React from "react";
-import Layout from "../components/Layout";
-import { auth, firebase } from "../src/firebase";
+import React from "react";
+import { NextPage } from "next";
 import { Header, Container, Button, Icon } from "semantic-ui-react";
+import Layout from "../components/Layout";
+import CardGroup from "../components/CardGroup";
+import { auth, db, firebase } from "../src/firebase";
+
+interface Emoji {
+  name: string;
+  image: string;
+}
+
+interface Props {
+  emojiList: Emoji[];
+}
 
 const handleSignIn = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -11,7 +22,7 @@ const handleSignIn = () => {
   });
 };
 
-const IndexPage = (): JSX.Element => (
+const IndexPage: NextPage<Props> = ({ emojiList }) => (
   <Layout>
     <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
       Sharemoji
@@ -22,7 +33,20 @@ const IndexPage = (): JSX.Element => (
         Google
       </Button>
     </Container>
+    <Container textAlign="center">
+      <CardGroup emojiList={emojiList} />
+    </Container>
   </Layout>
 );
+
+IndexPage.getInitialProps = async () => {
+  const datas = await db
+    .collection("emojis")
+    .limit(10)
+    .get();
+  const emojiList: Emoji[] = datas.docs.map((doc: any) => doc.data());
+
+  return { emojiList: emojiList };
+};
 
 export default IndexPage;

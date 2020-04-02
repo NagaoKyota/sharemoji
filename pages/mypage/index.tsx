@@ -1,22 +1,11 @@
 import React from "react";
-import { NextPage } from "next";
 import Layout from "../../components/Layout";
-import CardGroup from "../../components/CardGroup";
 import withAuth from "../../src/helper/withAuth";
-import { auth, db } from "../../src/firebase";
+import { auth } from "../../src/firebase";
 import { Header, Container, Button } from "semantic-ui-react";
 import FileUpload from "../../components/FileUpload";
 
-interface Emoji {
-  name: string;
-  image: string;
-}
-
-interface Props {
-  emojiList: Emoji[];
-}
-
-const Mypage: NextPage<Props> = ({ emojiList }) => {
+const Mypage = () => {
   return (
     <Layout>
       <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
@@ -26,21 +15,12 @@ const Mypage: NextPage<Props> = ({ emojiList }) => {
         <FileUpload />
         <Button onClick={() => auth.signOut()}>ログアウト</Button>
       </Container>
-      <Container textAlign="center">
-        <CardGroup emojiList={emojiList} />
-      </Container>
     </Layout>
   );
 };
 
-Mypage.getInitialProps = async () => {
-  const datas = await db
-    .collection("emojis")
-    .limit(10)
-    .get();
-  const emojiList: Emoji[] = datas.docs.map((doc: any) => doc.data());
-
-  return { emojiList: emojiList };
+Mypage.getInitialProps = () => {
+  return {};
 };
 
-export default withAuth(Mypage as NextPage);
+export default withAuth(Mypage);
