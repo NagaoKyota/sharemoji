@@ -17,7 +17,7 @@ const Layout: React.FunctionComponent<Props> = ({
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
       if (authUser) {
-        setSignedIn(auth.currentUser);
+        setSignedIn(authUser);
       }
     });
   }, []);

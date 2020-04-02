@@ -27,7 +27,7 @@ const IndexPage: NextPage<Props> = ({ emojiList }) => {
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
       if (authUser) {
-        setSignedIn(auth.currentUser);
+        setSignedIn(authUser);
       }
     });
   }, []);

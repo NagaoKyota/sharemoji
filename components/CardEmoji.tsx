@@ -12,7 +12,7 @@ const CardEmoji = ({ image, name = "none" }: CardEmojiProps) => {
     <Card id={name} style={{ margin: "20px" }}>
       <EmojiArea emoji={image} name={name} />
       <Card.Content>
-        <Card.Header style={{ textAlign: "center" }}>{`:${name}:`}</Card.Header>
+        <Card.Header>{`:${name}:`}</Card.Header>
       </Card.Content>
     </Card>
   );
