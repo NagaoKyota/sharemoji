@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { Header, Container, Button, Icon } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import CardGroup from "../components/CardGroup";
 import { auth, db, firebase } from "../src/firebase";
-import { signedIn } from "../src/helper/signedIn";
 
 interface Emoji {
   name: string;
@@ -22,24 +21,36 @@ const handleSignIn = () => {
   });
 };
 
-const IndexPage: NextPage<Props> = ({ emojiList }) => (
-  <Layout>
-    <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
-      Sharemoji
-    </Header>
-    {!signedIn ? (
+const IndexPage: NextPage<Props> = ({ emojiList }) => {
+  const [signedIn, setSignedIn]: any = useState(false);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        setSignedIn(auth.currentUser);
+      }
+    });
+  }, []);
+
+  return (
+    <Layout>
+      <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
+        Sharemoji
+      </Header>
+      {!signedIn ? (
+        <Container textAlign="center">
+          <Button className="twitter" onClick={handleSignIn}>
+            <Icon name="twitter" />
+            Twitter
+          </Button>
+        </Container>
+      ) : null}
       <Container textAlign="center">
-        <Button className="twitter" onClick={handleSignIn}>
-          <Icon name="twitter" />
-          Twitter
-        </Button>
+        <CardGroup emojiList={emojiList} />
       </Container>
-    ) : null}
-    <Container textAlign="center">
-      <CardGroup emojiList={emojiList} />
-    </Container>
-  </Layout>
-);
+    </Layout>
+  );
+};
 
 IndexPage.getInitialProps = async () => {
   const datas = await db
