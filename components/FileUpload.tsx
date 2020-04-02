@@ -72,7 +72,7 @@ const FileUpload: React.FC = () => {
   };
 
   return (
-    <div style={{ marginBottom: "16px" }}>
+    <div style={{ marginTop: "16px" }}>
       <label htmlFor="file" className="ui icon button" onClick={openDialog}>
         <Icon name="file" />
         <span style={{ marginLeft: "8px" }}>ファイルを選択</span>

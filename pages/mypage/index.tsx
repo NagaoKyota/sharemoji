@@ -12,8 +12,8 @@ const Mypage = () => {
         Sharemoji
       </Header>
       <Container textAlign="center">
-        <FileUpload />
         <Button onClick={() => auth.signOut()}>ログアウト</Button>
+        <FileUpload />
       </Container>
     </Layout>
   );
