@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Input, Button, Icon } from "semantic-ui-react";
 import Cropper from "react-cropper";
 import { storage, db } from "../src/firebase";
 
@@ -15,12 +16,20 @@ const FileUpload: React.FC = () => {
   const [name, setName] = useState("");
   const [croppedBlob, setCroppedBlob] = useState<any>(null);
   const cropper: any = useRef(null);
+  const input: any = useRef(null);
 
   const _crop = () => {
     if (cropper) {
       cropper.current.getCroppedCanvas().toBlob((blob: Blob) => {
         setCroppedBlob(blob);
       });
+    }
+  };
+
+  const openDialog = () => {
+    if (input) {
+      console.log(input.current.click());
+      // input.click();
     }
   };
 
@@ -63,18 +72,33 @@ const FileUpload: React.FC = () => {
   };
 
   return (
-    <div style={{ marginBottom: "16px" }}>
-      <input type="file" accept="image/jpeg,image/png" onChange={selectFile} />
+    <div style={{ marginTop: "16px" }}>
+      <label htmlFor="file" className="ui icon button" onClick={openDialog}>
+        <Icon name="file" />
+        <span style={{ marginLeft: "8px" }}>ファイルを選択</span>
+      </label>
+      <input
+        ref={input}
+        type="file"
+        accept="image/jpeg,image/png"
+        style={{ display: "none" }}
+        onChange={selectFile}
+      />
       {src ? (
-        <input
+        <Input
           type="text"
           value={removeExtension(name)}
           placeholder="半角英数字のみ"
-          style={{ marginLeft: "8px" }}
+          style={{ margin: "0 16px" }}
           onChange={inputName}
         />
       ) : null}
-      {src ? <button onClick={uploadFile}>アップロード</button> : null}
+      {src ? (
+        <Button onClick={uploadFile}>
+          <Icon name="upload" />
+          <span style={{ marginLeft: "8px" }}>アップロード</span>
+        </Button>
+      ) : null}
       <Cropper
         ref={cropper}
         src={src}
