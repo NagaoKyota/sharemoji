@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { Header, Container, Button, Icon } from "semantic-ui-react";
 import Layout from "../components/Layout";
@@ -15,29 +15,42 @@ interface Props {
 }
 
 const handleSignIn = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
+  const provider = new firebase.auth.TwitterAuthProvider();
   auth.signInWithPopup(provider).catch(() => {
     alert("OOps something went wrong check your console");
   });
 };
 
-const IndexPage: NextPage<Props> = ({ emojiList }) => (
-  <Layout>
-    <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
-      Sharemoji
-    </Header>
-    <Container textAlign="center">
-      <Button className="google plus" onClick={handleSignIn}>
-        <Icon name="google" />
-        Google
-      </Button>
-    </Container>
-    <Container textAlign="center">
-      <CardGroup emojiList={emojiList} />
-    </Container>
-  </Layout>
-);
+const IndexPage: NextPage<Props> = ({ emojiList }) => {
+  const [signedIn, setSignedIn]: any = useState(false);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        setSignedIn(authUser);
+      }
+    });
+  }, []);
+
+  return (
+    <Layout>
+      <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
+        Sharemoji
+      </Header>
+      {!signedIn ? (
+        <Container textAlign="center">
+          <Button className="twitter" onClick={handleSignIn}>
+            <Icon name="twitter" />
+            Twitter
+          </Button>
+        </Container>
+      ) : null}
+      <Container textAlign="center">
+        <CardGroup emojiList={emojiList} />
+      </Container>
+    </Layout>
+  );
+};
 
 IndexPage.getInitialProps = async () => {
   const datas = await db
