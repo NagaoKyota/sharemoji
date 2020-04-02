@@ -4,6 +4,7 @@ import { Header, Container, Button, Icon } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import CardGroup from "../components/CardGroup";
 import { auth, db, firebase } from "../src/firebase";
+import { signedIn } from "../src/helper/signedIn";
 
 interface Emoji {
   name: string;
@@ -15,8 +16,7 @@ interface Props {
 }
 
 const handleSignIn = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
+  const provider = new firebase.auth.TwitterAuthProvider();
   auth.signInWithPopup(provider).catch(() => {
     alert("OOps something went wrong check your console");
   });
@@ -27,12 +27,14 @@ const IndexPage: NextPage<Props> = ({ emojiList }) => (
     <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
       Sharemoji
     </Header>
-    <Container textAlign="center">
-      <Button className="google plus" onClick={handleSignIn}>
-        <Icon name="google" />
-        Google
-      </Button>
-    </Container>
+    {!signedIn ? (
+      <Container textAlign="center">
+        <Button className="twitter" onClick={handleSignIn}>
+          <Icon name="twitter" />
+          Twitter
+        </Button>
+      </Container>
+    ) : null}
     <Container textAlign="center">
       <CardGroup emojiList={emojiList} />
     </Container>

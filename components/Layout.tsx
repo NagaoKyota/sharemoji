@@ -2,6 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { Header, Segment, Icon } from "semantic-ui-react";
+import { signedIn } from "../src/helper/signedIn";
 
 type Props = {
   title?: string;
@@ -26,13 +27,15 @@ const Layout: React.FunctionComponent<Props> = ({
             </a>
           </Link>
         </Header>
-        <Header as="h2" floated="right">
-          <Link href="/mypage">
-            <a>
-              <Icon name="user" />
-            </a>
-          </Link>
-        </Header>
+        {signedIn ? (
+          <Header as="h2" floated="right">
+            <Link href="/mypage">
+              <a>
+                <Icon name="user" />
+              </a>
+            </Link>
+          </Header>
+        ) : null}
       </Segment>
     </header>
     {children}
