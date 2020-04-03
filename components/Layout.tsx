@@ -12,13 +12,11 @@ const Layout: React.FunctionComponent<Props> = ({
   children,
   title = "Sharemoji | Easy to share Slack custom Emoji"
 }) => {
-  const [signedIn, setSignedIn]: any = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        setSignedIn(authUser);
-      }
+      setSignedIn(authUser !== null);
     });
   }, []);
 

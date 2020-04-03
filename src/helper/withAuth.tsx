@@ -16,12 +16,6 @@ const withAuth = (Component: NextPage) => {
       };
     }
 
-    static async getInitialProps(ctx: any) {
-      return (
-        Component.getInitialProps && (await Component.getInitialProps(ctx))
-      );
-    }
-
     componentDidMount() {
       auth.onAuthStateChanged(authUser => {
         if (authUser) {
