@@ -10,7 +10,7 @@ type Props = {
 
 const Layout: React.FunctionComponent<Props> = ({
   children,
-  title = "Sharemoji | Easily share Slack custom Emoji"
+  title = "Sharemoji | Easy to share Slack custom Emoji"
 }) => {
   const [signedIn, setSignedIn]: any = useState(false);
 
