@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Input, Button, Icon } from "semantic-ui-react";
 import Cropper from "react-cropper";
-import { storage, db } from "../src/firebase";
+import { auth, storage, db } from "../src/firebase";
+import ReactCropper from "react-cropper";
 
 const removeExtension = (str: string) => {
   let base = new String(str).substring(str.lastIndexOf("/") + 1);
@@ -15,33 +16,32 @@ const FileUpload: React.FC = () => {
   const [src, setSrc] = useState("");
   const [name, setName] = useState("");
   const [croppedBlob, setCroppedBlob] = useState<any>(null);
-  const cropper: any = useRef(null);
-  const input: any = useRef(null);
+  const cropper = useRef<ReactCropper>(null);
+  const input = useRef<HTMLInputElement>(null);
 
   const _crop = () => {
-    if (cropper) {
-      cropper.current.getCroppedCanvas().toBlob((blob: Blob) => {
+    if (cropper && cropper.current) {
+      cropper.current.getCroppedCanvas().toBlob(blob => {
         setCroppedBlob(blob);
       });
     }
   };
 
   const openDialog = () => {
-    if (input) {
-      console.log(input.current.click());
-      // input.click();
+    if (input && input.current) {
+      input.current.click();
     }
   };
 
-  const selectFile = (event: any) => {
+  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
-    if (files.length === 1) {
+    if (files?.length === 1) {
       setSrc(window.URL.createObjectURL(files[0]));
       setName(files[0].name);
     }
   };
 
-  const inputName = (event: any) => {
+  const inputName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value.replace(/[^0-9A-Za-z]/g, ""));
   };
 
@@ -62,7 +62,11 @@ const FileUpload: React.FC = () => {
           .doc()
           .set({
             image: `gs://${snapshot.ref.bucket}/${snapshot.ref.name}`,
-            name: removeExtension(file.name)
+            name: removeExtension(file.name),
+            user: {
+              displayName: auth.currentUser?.displayName,
+              photoURL: auth.currentUser?.photoURL?.replace("normal", "200x200")
+            }
           })
           .then(() => {
             location.reload();

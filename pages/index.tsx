@@ -4,10 +4,15 @@ import { Header, Container, Button, Icon } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import CardGroup from "../components/CardGroup";
 import { auth, db, firebase } from "../src/firebase";
+import { ServerResponse } from "http";
 
 interface Emoji {
   name: string;
   image: string;
+  user: {
+    displayName: string;
+    photoURL: string;
+  };
 }
 
 interface Props {
@@ -22,13 +27,11 @@ const handleSignIn = () => {
 };
 
 const IndexPage: NextPage<Props> = ({ emojiList }) => {
-  const [signedIn, setSignedIn]: any = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        setSignedIn(authUser);
-      }
+      setSignedIn(authUser !== null);
     });
   }, []);
 
@@ -54,13 +57,13 @@ const IndexPage: NextPage<Props> = ({ emojiList }) => {
 
 const USER_PASS = "c2hhcmU6bW9qaQ==";
 
-const sendUnauthorized = (res: any) => {
+const sendUnauthorized = (res: ServerResponse) => {
   res.writeHead(401, { "www-authenticate": "Basic realm=secret string" });
   res.end();
 };
 
 IndexPage.getInitialProps = async ({ req, res }: NextPageContext) => {
-  if (!process.browser && req) {
+  if (!process.browser && req && res) {
     const authorization = req.headers["authorization"] || "";
 
     const matches = authorization.match(/[^\s]+$/);
