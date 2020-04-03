@@ -8,7 +8,7 @@ interface Props {
     image: string;
     user: {
       displayName: string;
-      imageUrl: string;
+      photoURL: string;
     };
   }[];
 }

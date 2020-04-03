@@ -11,7 +11,7 @@ interface Emoji {
   image: string;
   user: {
     displayName: string;
-    imageUrl: string;
+    photoURL: string;
   };
 }
 

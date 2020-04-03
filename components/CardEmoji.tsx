@@ -7,7 +7,7 @@ interface CardEmojiProps {
   name?: string;
   user: {
     displayName: string;
-    imageUrl: string;
+    photoURL: string;
   };
 }
 
@@ -20,7 +20,7 @@ const CardEmoji = ({ image, name = "none", user }: CardEmojiProps) => {
       </Card.Content>
       <Card.Content extra>
         <p>
-          <img src={user.imageUrl} style={{ marginRight: "8px" }} width="30" />
+          <img src={user.photoURL} style={{ marginRight: "8px" }} width="30" />
           {`@${user.displayName}`}
         </p>
       </Card.Content>

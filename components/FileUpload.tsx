@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Input, Button, Icon } from "semantic-ui-react";
 import Cropper from "react-cropper";
-import { storage, db } from "../src/firebase";
+import { auth, storage, db } from "../src/firebase";
 import ReactCropper from "react-cropper";
 
 const removeExtension = (str: string) => {
@@ -62,7 +62,11 @@ const FileUpload: React.FC = () => {
           .doc()
           .set({
             image: `gs://${snapshot.ref.bucket}/${snapshot.ref.name}`,
-            name: removeExtension(file.name)
+            name: removeExtension(file.name),
+            user: {
+              displayName: auth.currentUser?.displayName,
+              photoURL: auth.currentUser?.photoURL?.replace("normal", "200x200")
+            }
           })
           .then(() => {
             location.reload();
