@@ -5,14 +5,24 @@ import EmojiArea from "./EmojiArea";
 interface CardEmojiProps {
   image?: string;
   name?: string;
+  user: {
+    displayName: string;
+    imageUrl: string;
+  };
 }
 
-const CardEmoji = ({ image, name = "none" }: CardEmojiProps) => {
+const CardEmoji = ({ image, name = "none", user }: CardEmojiProps) => {
   return (
     <Card id={name} style={{ margin: "20px" }}>
       <EmojiArea emoji={image} name={name} />
       <Card.Content>
         <Card.Header>{`:${name}:`}</Card.Header>
+      </Card.Content>
+      <Card.Content extra>
+        <p>
+          <img src={user.imageUrl} style={{ marginRight: "8px" }} width="30" />
+          {`@${user.displayName}`}
+        </p>
       </Card.Content>
     </Card>
   );
