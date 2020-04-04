@@ -16,6 +16,13 @@ const withAuth = (Component: NextPage) => {
       };
     }
 
+    // HOC で getInitialProps が効かなくなる対策
+    static async getInitialProps(ctx: any) {
+      return (
+        Component.getInitialProps && (await Component.getInitialProps(ctx))
+      );
+    }
+
     componentDidMount() {
       auth.onAuthStateChanged(authUser => {
         if (authUser) {
