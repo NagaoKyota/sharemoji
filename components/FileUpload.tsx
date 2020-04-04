@@ -63,6 +63,7 @@ const FileUpload: React.FC = () => {
           .set({
             image: `gs://${snapshot.ref.bucket}/${snapshot.ref.name}`,
             name: removeExtension(file.name),
+            createdAt: new Date(),
             user: {
               displayName: auth.currentUser?.displayName,
               photoURL: auth.currentUser?.photoURL?.replace("normal", "200x200")

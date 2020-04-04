@@ -80,6 +80,7 @@ IndexPage.getInitialProps = async ({ req, res }: NextPageContext) => {
 
   const datas = await db
     .collection("emojis")
+    .orderBy("createdAt", "desc")
     .limit(10)
     .get();
   const emojiList: Emoji[] = datas.docs.map((doc: any) => doc.data());
