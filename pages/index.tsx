@@ -13,6 +13,7 @@ interface Emoji {
     displayName: string;
     photoURL: string;
   };
+  id: string;
 }
 
 interface Props {
@@ -80,9 +81,14 @@ IndexPage.getInitialProps = async ({ req, res }: NextPageContext) => {
 
   const datas = await db
     .collection("emojis")
+    .orderBy("createdAt", "desc")
     .limit(10)
     .get();
-  const emojiList: Emoji[] = datas.docs.map((doc: any) => doc.data());
+  const emojiList: Emoji[] = datas.docs.map((doc: any) => {
+    const data = doc.data();
+    Object.assign(data, { id: doc.id });
+    return data;
+  });
 
   return { emojiList: emojiList };
 };

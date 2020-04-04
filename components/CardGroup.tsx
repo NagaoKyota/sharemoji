@@ -10,6 +10,7 @@ interface Props {
       displayName: string;
       photoURL: string;
     };
+    id: string;
   }[];
 }
 
