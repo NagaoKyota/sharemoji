@@ -1,62 +1,31 @@
-# TypeScript Next.js example
+![](./src/image/sharemoji.png)
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
-
-## Deploy your own
-
-Deploy the example using [ZEIT Now](https://zeit.co/now):
-
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/import/project?template=https://github.com/zeit/next.js/tree/canary/examples/with-typescript)
-
-## How to use it?
-
-### Using `create-next-app`
-
-Execute [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+## 🔧 Development
 
 ```bash
-npm init next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
+$ cp .env-sample .env
 ```
 
-### Download manually
+Firebase setup introduce https://firebase.google.com/docs/web/setup
 
-Download the example:
+Then, edit `.env` file.
+
+```js
+FIREBASE_API_KEY="api-key"
+FIREBASE_AUTH_DOMAIN="project-id.firebaseapp.com"
+FIREBASE_DATABASE_URL="https://project-id.firebaseio.com"
+FIREBASE_PROJECT_ID="project-id"
+FIREBASE_STORAGE_BUCKET="project-id.appspot.com"
+FIREBASE_MESSAGING_SENDER_ID="sender-id"
+FIREBASE_APP_ID="app-id"
+FIREBASE_MEASUREMENT_ID="G-measurement-id"
+```
+
+After finish Firebase environment setting, execute this commands.
 
 ```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/with-typescript
-cd with-typescript
+$ yarn
+$ yarn dev
 ```
 
-Install it and run:
-
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
-```
-
-Deploy it to the cloud with [ZEIT Now](https://zeit.co/import?filter=next.js&utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
-
-## Notes
-
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
-
-```
-npm install --save-dev typescript
-```
-
-To enable TypeScript's features, we install the type declaratons for React and Node.
-
-```
-npm install --save-dev @types/react @types/react-dom @types/node
-```
-
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
-
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
-
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
+Open http://localhost:3000 to view it in the browser.
