@@ -9,6 +9,7 @@ import { ServerResponse } from "http";
 interface Emoji {
   name: string;
   image: string;
+  fileName: string;
   user: {
     displayName: string;
     photoURL: string;
