@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import { Header, Container, Button, Icon } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import CardGroup from "../components/CardGroup";
 import { auth, db, firebase } from "../src/firebase";
-import { ServerResponse } from "http";
 
 interface Emoji {
   name: string;
@@ -57,29 +56,7 @@ const IndexPage: NextPage<Props> = ({ emojiList }) => {
   );
 };
 
-const USER_PASS = "c2hhcmU6bW9qaQ==";
-
-const sendUnauthorized = (res: ServerResponse) => {
-  res.writeHead(401, { "www-authenticate": "Basic realm=secret string" });
-  res.end();
-};
-
-IndexPage.getInitialProps = async ({ req, res }: NextPageContext) => {
-  if (!process.browser && req && res) {
-    const authorization = req.headers["authorization"] || "";
-
-    const matches = authorization.match(/[^\s]+$/);
-    if (matches === null) {
-      sendUnauthorized(res);
-    } else {
-      const userPass = matches[0];
-
-      if (userPass !== USER_PASS) {
-        sendUnauthorized(res);
-      }
-    }
-  }
-
+IndexPage.getInitialProps = async () => {
   const datas = await db
     .collection("emojis")
     .orderBy("createdAt", "desc")
