@@ -11,19 +11,21 @@ const Mypage = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged(async authUser => {
-      const datas = await db
-        .collection("emojis")
-        .where("user.displayName", "==", authUser?.displayName)
-        .orderBy("createdAt", "desc")
-        .limit(10)
-        .get();
-      setEmojis(
-        datas.docs.map((doc: any) => {
-          const data = doc.data();
-          Object.assign(data, { id: doc.id });
-          return data;
-        })
-      );
+      if (authUser) {
+        const datas = await db
+          .collection("emojis")
+          .where("user.displayName", "==", authUser?.displayName)
+          .orderBy("createdAt", "desc")
+          .limit(12)
+          .get();
+        setEmojis(
+          datas.docs.map((doc: any) => {
+            const data = doc.data();
+            Object.assign(data, { id: doc.id });
+            return data;
+          })
+        );
+      }
     });
   }, []);
 

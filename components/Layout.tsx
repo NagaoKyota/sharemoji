@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { Header, Segment, Icon } from "semantic-ui-react";
+import { Button, Segment } from "semantic-ui-react";
 import { auth } from "../src/firebase";
 import ogp from "../src/image/sharemoji.png";
 
@@ -47,21 +47,13 @@ const Layout: React.FunctionComponent<Props> = ({
       </Head>
       <header>
         <Segment clearing>
-          <Header as="h2" floated="left">
-            <Link href="/">
-              <a>
-                <Icon name="home" />
-              </a>
-            </Link>
-          </Header>
+          <Link href="/">
+            <Button circular icon="home" style={{ float: "left" }} />
+          </Link>
           {signedIn ? (
-            <Header as="h2" floated="right">
-              <Link href="/mypage">
-                <a>
-                  <Icon name="user" />
-                </a>
-              </Link>
-            </Header>
+            <Link href="/mypage">
+              <Button circular icon="user" style={{ float: "right" }} />
+            </Link>
           ) : null}
         </Segment>
       </header>
