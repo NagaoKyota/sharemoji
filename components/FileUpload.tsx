@@ -1,8 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Input, Button, Icon } from "semantic-ui-react";
 import Cropper from "react-cropper";
+import { randomBytes } from "crypto";
 import { auth, storage, db } from "../src/firebase";
 import ReactCropper from "react-cropper";
+
+const generateRandomString = (length: number) => {
+  return randomBytes(length).reduce((p, i) => p + (i % 32).toString(32), "");
+};
 
 const removeExtension = (str: string) => {
   let base = new String(str).substring(str.lastIndexOf("/") + 1);
@@ -53,16 +58,18 @@ const FileUpload: React.FC = () => {
 
   const uploadFile = () => {
     if (croppedBlob && name) {
+      const ramdomString = generateRandomString(8);
       const file: File = blobToFile();
       const storageRef = storage.ref();
-      const ref = storageRef.child(file.name);
+      const ref = storageRef.child(ramdomString);
       ref.put(file).then(snapshot => {
         console.log("Uploaded a blob or file!");
         db.collection("emojis")
           .doc()
           .set({
             image: `gs://${snapshot.ref.bucket}/${snapshot.ref.name}`,
-            name: removeExtension(file.name),
+            name: name,
+            fileName: ramdomString,
             createdAt: new Date(),
             user: {
               displayName: auth.currentUser?.displayName,

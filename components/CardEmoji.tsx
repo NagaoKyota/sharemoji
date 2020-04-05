@@ -1,11 +1,12 @@
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
-import { auth, db } from "../src/firebase";
+import { auth, db, storage } from "../src/firebase";
 import EmojiArea from "./EmojiArea";
 
 interface CardEmojiProps {
   image: string;
   name: string;
+  fileName: string;
   user: {
     displayName: string;
     photoURL: string;
@@ -13,16 +14,25 @@ interface CardEmojiProps {
   id: string;
 }
 
-const CardEmoji = ({ image, name, user, id }: CardEmojiProps) => {
-  const deleteIcon = () => {
-    db.collection("emojis")
-      .doc(id)
+const CardEmoji = ({ image, name, fileName, user, id }: CardEmojiProps) => {
+  const deleteIcon = async () => {
+    const storageRef = storage.ref();
+    const ref = storageRef.child(fileName);
+    ref
       .delete()
-      .then(() => {
-        location.reload();
-      })
       .catch(() => {
         alert("削除できませんでした");
+      })
+      .then(() => {
+        db.collection("emojis")
+          .doc(id)
+          .delete()
+          .then(() => {
+            location.reload();
+          })
+          .catch(() => {
+            alert("削除できませんでした");
+          });
       });
   };
 

@@ -6,6 +6,7 @@ interface Props {
   emojiList: {
     name: string;
     image: string;
+    fileName: string;
     user: {
       displayName: string;
       photoURL: string;
