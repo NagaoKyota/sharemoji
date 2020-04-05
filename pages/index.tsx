@@ -40,6 +40,7 @@ const IndexPage: NextPage<Props> = ({ emojiList }) => {
     <Layout>
       <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
         Sharemoji
+        <p style={{ fontSize: "24px" }}>Easy to share & copy custom Emoji!</p>
       </Header>
       {!signedIn ? (
         <Container textAlign="center">
