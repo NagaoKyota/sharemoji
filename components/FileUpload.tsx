@@ -42,12 +42,12 @@ const FileUpload: React.FC = () => {
     const { files } = event.target;
     if (files?.length === 1) {
       setSrc(window.URL.createObjectURL(files[0]));
-      setName(files[0].name);
+      setName(removeExtension(files[0].name));
     }
   };
 
   const inputName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value.replace(/[^0-9A-Za-z]/g, ""));
+    setName(event.target.value.replace(/[^0-9A-Za-z_\\-]/g, ""));
   };
 
   const blobToFile = (): File => {
@@ -99,7 +99,7 @@ const FileUpload: React.FC = () => {
       {src ? (
         <Input
           type="text"
-          value={removeExtension(name)}
+          value={name}
           placeholder="半角英数字のみ"
           style={{ margin: "0 16px" }}
           onChange={inputName}
