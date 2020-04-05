@@ -40,6 +40,7 @@ const IndexPage: NextPage<Props> = ({ emojiList }) => {
     <Layout>
       <Header as="h1" textAlign="center" style={{ fontSize: "60px" }}>
         Sharemoji
+        <p style={{ fontSize: "24px" }}>Easy to share & copy custom Emoji!</p>
       </Header>
       {!signedIn ? (
         <Container textAlign="center">
@@ -60,7 +61,7 @@ IndexPage.getInitialProps = async () => {
   const datas = await db
     .collection("emojis")
     .orderBy("createdAt", "desc")
-    .limit(10)
+    .limit(12)
     .get();
   const emojiList: Emoji[] = datas.docs.map((doc: any) => {
     const data = doc.data();
